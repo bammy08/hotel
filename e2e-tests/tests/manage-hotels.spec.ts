@@ -11,8 +11,8 @@ test.beforeEach(async ({ page }) => {
 
   await expect(page.getByRole('heading', { name: 'Sign In' })).toBeVisible();
 
-  await page.locator('[name=email]').fill('1@1.com');
-  await page.locator('[name=password]').fill('password123');
+  await page.locator('[name=email]').fill('tre@gmail.com');
+  await page.locator('[name=password]').fill('123456');
 
   await page.getByRole('button', { name: 'Sign In' }).click();
 
@@ -65,22 +65,20 @@ test('should display hotels', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'Add Hotel' })).toBeVisible();
 });
 
-// test('should edit hotel', async ({ page }) => {
-//   await page.goto(`${UI_URL}my-hotels`);
+test('should edit hotel', async ({ page }) => {
+  await page.goto(`${UI_URL}my-hotels`);
 
-//   await page.getByRole('link', { name: 'View Details' }).first().click();
+  await page.getByRole('link', { name: 'View Details' }).first().click();
 
-//   await page.waitForSelector('[name="name"]', { state: 'attached' });
-//   await expect(page.locator('[name="name"]')).toHaveValue('Dublin Getaways');
-//   await page.locator('[name="name"]').fill('Dublin Getaways UPDATED');
-//   await page.getByRole('button', { name: 'Save' }).click();
-//   await expect(page.getByText('Hotel Saved!')).toBeVisible();
+  await page.waitForSelector('[name="name"]', { state: 'attached' });
+  await expect(page.locator('[name="name"]')).toHaveValue('Three Crowns');
+  await page.locator('[name="name"]').fill('Three Crowns');
+  await page.getByRole('button', { name: 'Save' }).click();
+  await expect(page.getByText('Hotel Saved!')).toBeVisible();
 
-//   await page.reload();
+  await page.reload();
 
-//   await expect(page.locator('[name="name"]')).toHaveValue(
-//     'Dublin Getaways UPDATED'
-//   );
-//   await page.locator('[name="name"]').fill('Dublin Getaways');
-//   await page.getByRole('button', { name: 'Save' }).click();
-// });
+  await expect(page.locator('[name="name"]')).toHaveValue('Three Crowns');
+  await page.locator('[name="name"]').fill('Three Crowns');
+  await page.getByRole('button', { name: 'Save' }).click();
+});
