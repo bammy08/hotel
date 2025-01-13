@@ -2,10 +2,14 @@
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'hero-pattern': "url('/src/assets/hotel.png')",
+      },
+    },
     container: {
       padding: {
-        md: '10rem',
+        md: '6rem',
       },
     },
   },

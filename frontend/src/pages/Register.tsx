@@ -53,30 +53,53 @@ const Register = () => {
         </h2>
         <form className="space-y-5" onSubmit={onSubmit}>
           <div className="flex flex-col gap-4">
+            {/* First Name */}
             <div className="relative">
-              <AiOutlineUser className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                className="w-full border border-gray-300 rounded-lg py-2 pl-10 pr-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                placeholder="First Name"
-                {...register('firstName', {
-                  required: 'First Name is required',
-                })}
-              />
+              <label
+                htmlFor="firstName"
+                className="text-sm font-medium text-gray-700 mb-1"
+              >
+                First Name
+              </label>
+              <div className="relative mt-1">
+                <AiOutlineUser className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
+                <input
+                  id="firstName"
+                  type="text"
+                  className="w-full border border-gray-300 rounded-lg py-2 pl-10 pr-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  placeholder="First Name"
+                  {...register('firstName', {
+                    required: 'First Name is required',
+                  })}
+                />
+              </div>
               {errors.firstName && (
                 <p className="text-sm text-red-500 mt-1">
                   {errors.firstName.message}
                 </p>
               )}
             </div>
+
+            {/* Last Name */}
             <div className="relative">
-              <AiOutlineUser className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                className="w-full border border-gray-300 rounded-lg py-2 pl-10 pr-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                placeholder="Last Name"
-                {...register('lastName', { required: 'Last Name is required' })}
-              />
+              <label
+                htmlFor="lastName"
+                className="text-sm font-medium text-gray-700"
+              >
+                Last Name
+              </label>
+              <div className="relative mt-1">
+                <AiOutlineUser className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
+                <input
+                  id="lastName"
+                  type="text"
+                  className="w-full border border-gray-300 rounded-lg py-2 pl-10 pr-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                  placeholder="Last Name"
+                  {...register('lastName', {
+                    required: 'Last Name is required',
+                  })}
+                />
+              </div>
               {errors.lastName && (
                 <p className="text-sm text-red-500 mt-1">
                   {errors.lastName.message}
@@ -85,14 +108,24 @@ const Register = () => {
             </div>
           </div>
 
+          {/* Email */}
           <div className="relative">
-            <AiOutlineMail className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type="email"
-              className="w-full border border-gray-300 rounded-lg py-2 pl-10 pr-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              placeholder="Email"
-              {...register('email', { required: 'Email is required' })}
-            />
+            <label
+              htmlFor="email"
+              className="text-sm font-medium text-gray-700"
+            >
+              Email
+            </label>
+            <div className="relative mt-1">
+              <AiOutlineMail className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
+              <input
+                id="email"
+                type="email"
+                className="w-full border border-gray-300 rounded-lg py-2 pl-10 pr-3 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                placeholder="Email"
+                {...register('email', { required: 'Email is required' })}
+              />
+            </div>
             {errors.email && (
               <p className="text-sm text-red-500 mt-1">
                 {errors.email.message}
@@ -100,27 +133,37 @@ const Register = () => {
             )}
           </div>
 
+          {/* Password */}
           <div className="relative">
-            <AiOutlineLock className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type={showPassword ? 'text' : 'password'}
-              className="w-full border border-gray-300 rounded-lg py-2 pl-10 pr-10 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              placeholder="Password"
-              {...register('password', {
-                required: 'Password is required',
-                minLength: {
-                  value: 6,
-                  message: 'Password must be at least 6 characters',
-                },
-              })}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500"
+            <label
+              htmlFor="password"
+              className="text-sm font-medium text-gray-700"
             >
-              {showPassword ? <FaEyeSlash /> : <FaEye />}
-            </button>
+              Password
+            </label>
+            <div className="relative mt-1">
+              <AiOutlineLock className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
+              <input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                className="w-full border border-gray-300 rounded-lg py-2 pl-10 pr-10 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                placeholder="Password"
+                {...register('password', {
+                  required: 'Password is required',
+                  minLength: {
+                    value: 6,
+                    message: 'Password must be at least 6 characters',
+                  },
+                })}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500"
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
             {errors.password && (
               <p className="text-sm text-red-500 mt-1">
                 {errors.password.message}
@@ -128,29 +171,39 @@ const Register = () => {
             )}
           </div>
 
+          {/* Confirm Password */}
           <div className="relative">
-            <AiOutlineLock className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type={showConfirmPassword ? 'text' : 'password'}
-              className="w-full border border-gray-300 rounded-lg py-2 pl-10 pr-10 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              placeholder="Confirm Password"
-              {...register('confirmPassword', {
-                validate: (val) => {
-                  if (!val) {
-                    return 'Confirm Password is required';
-                  } else if (watch('password') !== val) {
-                    return 'Passwords do not match';
-                  }
-                },
-              })}
-            />
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500"
+            <label
+              htmlFor="confirmPassword"
+              className="text-sm font-medium text-gray-700"
             >
-              {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-            </button>
+              Confirm Password
+            </label>
+            <div className="relative mt-1">
+              <AiOutlineLock className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
+              <input
+                id="confirmPassword"
+                type={showConfirmPassword ? 'text' : 'password'}
+                className="w-full border border-gray-300 rounded-lg py-2 pl-10 pr-10 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                placeholder="Confirm Password"
+                {...register('confirmPassword', {
+                  validate: (val) => {
+                    if (!val) {
+                      return 'Confirm Password is required';
+                    } else if (watch('password') !== val) {
+                      return 'Passwords do not match';
+                    }
+                  },
+                })}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500"
+              >
+                {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
             {errors.confirmPassword && (
               <p className="text-sm text-red-500 mt-1">
                 {errors.confirmPassword.message}
@@ -158,6 +211,7 @@ const Register = () => {
             )}
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold text-lg hover:bg-blue-500 transition duration-200"
