@@ -5,7 +5,7 @@ import { param, validationResult } from 'express-validator';
 import Stripe from 'stripe';
 import verifyToken from '../middleware/auth';
 
-// const stripe = new Stripe(process.env.STRIPE_API_KEY as string);
+const stripe = new Stripe(process.env.STRIPE_API_KEY as string);
 
 const router = express.Router();
 
@@ -100,79 +100,79 @@ router.post(
 
     const totalCost = hotel.pricePerNight * numberOfNights;
 
-    // const paymentIntent = await stripe.paymentIntents.create({
-    //   amount: totalCost * 100,
-    //   currency: 'gbp',
-    //   metadata: {
-    //     hotelId,
-    //     userId: req.userId,
-    //   },
-    // });
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: totalCost * 100,
+      currency: 'usd',
+      metadata: {
+        hotelId,
+        userId: req.userId,
+      },
+    });
 
-    // if (!paymentIntent.client_secret) {
-    //   return;
-    // }
+    if (!paymentIntent.client_secret) {
+      return;
+    }
 
-    // const response = {
-    //   paymentIntentId: paymentIntent.id,
-    //   clientSecret: paymentIntent.client_secret.toString(),
-    //   totalCost,
-    // };
+    const response = {
+      paymentIntentId: paymentIntent.id,
+      clientSecret: paymentIntent.client_secret.toString(),
+      totalCost,
+    };
 
-    // res.send(response);
+    res.send(response);
   }
 );
 
-// router.post(
-//   '/:hotelId/bookings',
-//   verifyToken,
-//   async (req: Request, res: Response): Promise<void> => {
-//     try {
-//       const paymentIntentId = req.body.paymentIntentId;
+router.post(
+  '/:hotelId/bookings',
+  verifyToken,
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const paymentIntentId = req.body.paymentIntentId;
 
-//       const paymentIntent = await stripe.paymentIntents.retrieve(
-//         paymentIntentId as string
-//       );
+      const paymentIntent = await stripe.paymentIntents.retrieve(
+        paymentIntentId as string
+      );
 
-//       if (!paymentIntent) {
-//         return;
-//       }
+      if (!paymentIntent) {
+        return;
+      }
 
-//       if (
-//         paymentIntent.metadata.hotelId !== req.params.hotelId ||
-//         paymentIntent.metadata.userId !== req.userId
-//       ) {
-//         return;
-//       }
+      if (
+        paymentIntent.metadata.hotelId !== req.params.hotelId ||
+        paymentIntent.metadata.userId !== req.userId
+      ) {
+        return;
+      }
 
-//       if (paymentIntent.status !== 'succeeded') {
-//         return;
-//       }
+      if (paymentIntent.status !== 'succeeded') {
+        return;
+      }
 
-//       const newBooking: BookingType = {
-//         ...req.body,
-//         userId: req.userId,
-//       };
+      const newBooking: BookingType = {
+        ...req.body,
+        userId: req.userId,
+      };
 
-//       const hotel = await Hotel.findOneAndUpdate(
-//         { _id: req.params.hotelId },
-//         {
-//           $push: { bookings: newBooking },
-//         }
-//       );
+      const hotel = await Hotel.findOneAndUpdate(
+        { _id: req.params.hotelId },
+        {
+          $push: { bookings: newBooking },
+        }
+      );
 
-//       if (!hotel) {
-//         return;
-//       }
+      if (!hotel) {
+        return;
+      }
 
-//       await hotel.save();
-//       res.status(200).send();
-//     } catch (error) {
-//       console.log(error);
-//       res.status(500).json({ message: 'something went wrong' });
-//     }
-//   }
-// );
+      await hotel.save();
+      res.status(200).send();
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: 'something went wrong' });
+    }
+  }
+);
 
 const constructSearchQuery = (queryParams: any) => {
   let constructedQuery: any = {};
