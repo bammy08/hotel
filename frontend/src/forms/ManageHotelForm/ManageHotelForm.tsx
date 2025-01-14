@@ -6,6 +6,7 @@ import TypeSection from './TypeSection';
 import FacilitiesSection from './FacilitiesSection';
 import GuestsSection from './GuestsSection';
 import ImagesSection from './ImagesSection';
+import { useNavigate } from 'react-router-dom';
 
 export type HotelFormData = {
   name: string;
@@ -31,12 +32,13 @@ type Props = {
 const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
   const formMethods = useForm<HotelFormData>();
   const { handleSubmit, reset } = formMethods;
+  const navigate = useNavigate();
 
   useEffect(() => {
     reset(hotel);
   }, [hotel, reset]);
 
-  const onSubmit = handleSubmit((formDataJson: HotelFormData) => {
+  const onSubmit = handleSubmit(async (formDataJson: HotelFormData) => {
     const formData = new FormData();
     if (hotel) {
       formData.append('hotelId', hotel._id);
@@ -65,7 +67,13 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
       formData.append(`imageFiles`, imageFile);
     });
 
-    onSave(formData);
+    try {
+      await onSave(formData); // Wait for the save operation to complete
+      navigate('/my-hotels');
+    } catch (error) {
+      console.error('Failed to save hotel:', error);
+      // Handle error (e.g., show a toast notification)
+    }
   });
 
   return (
